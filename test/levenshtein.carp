@@ -1,0 +1,20 @@
+(load "Test.carp")
+
+(load "levenshtein.carp")
+
+(use Test)
+
+(deftest test
+  (assert-equal test
+                0
+                (levenshtein "world" "world")
+                "levenshtein works on equal strings")
+  (assert-equal test
+                1
+                (levenshtein "workd" "world")
+                "levenshtein works on edits I")
+  (assert-equal test
+                4
+                (levenshtein "hello" "world")
+                "levenshtein works on edits II")
+)

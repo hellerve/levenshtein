@@ -1,0 +1,27 @@
+(defmodule String
+  (doc levenshtein "Get the levenshtein distance between two strings")
+  (defn levenshtein [s1 s2]
+    (let-do [l1 (length s1)
+             l2 (length s2)
+             row (Array.allocate (+ l1 1))
+             prev (Array.allocate (+ l1 1))
+             min3 (fn [a b c] (if (< a b) (if (< a c) a c) (if (< b c) b c)))]
+      (for [i 0 (+ l2 1)] (Array.aset! &prev i i))
+      (for [i 0 l1]
+        (do
+          (Array.aset! &row 0 (+ i 1))
+          (for [j 0 l2]
+            (Array.aset! &row (+ j 1)
+                         (min3 (+ 1 @(Array.nth &row j))
+                               (+ 1 @(Array.nth &prev (+ j 1)))
+                               (+ @(Array.nth &prev j)
+                                  (if (= (char-at s1 j)
+                                         (char-at s2 i))
+                                    0
+                                    1)))))
+          (let-do [tmp []]
+            (set! tmp @&prev)
+            (set! prev @&row)
+            (set! row tmp))))
+      @(Array.nth &prev l2)))
+)
