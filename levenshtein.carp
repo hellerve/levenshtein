@@ -12,9 +12,9 @@
           (Array.aset! &row 0 (+ i 1))
           (for [j 0 l2]
             (Array.aset! &row (+ j 1)
-                         (min3 (+ 1 @(Array.nth &row j))
-                               (+ 1 @(Array.nth &prev (+ j 1)))
-                               (+ @(Array.nth &prev j)
+                         (min3 (+ 1 @(Array.unsafe-nth &row j))
+                               (+ 1 @(Array.unsafe-nth &prev (+ j 1)))
+                               (+ @(Array.unsafe-nth &prev j)
                                   (if (= (char-at s1 j)
                                          (char-at s2 i))
                                     0
@@ -23,5 +23,5 @@
             (set! tmp @&prev)
             (set! prev @&row)
             (set! row tmp))))
-      @(Array.nth &prev l2)))
+      @(Array.unsafe-nth &prev l2)))
 )
